@@ -71,4 +71,13 @@ class Labirinto:
         # ]
         return 0;
 
-        
+class Celula:
+    def __init__(self, tipo):
+        self.tipo = tipo
+        self.cost = float('inf')    # o custo deve ser infinito inicialmente porque o custo apenas é trocado quando um custo menor é encontrado
+        self.manhattan = []         # lista com distancias manhattan até cada um dos objetivos
+        # self.prioridade = []      # melhor implementar no agente, será uma lista com o valor de cada objetivo então será igual para todas as células
+        self.pai = None             # célula anterior no caminho, para tracejar a rota
+
+    # def avaliação(self):              # faz mais sentido implementar no agente
+    #     pass
