@@ -1,8 +1,13 @@
-import csv 
+class Celula:
+    def __init__(self, tipo):
+        self.tipo = tipo
+        self.cost = float('inf')    # o custo deve ser infinito inicialmente porque o custo apenas é trocado quando um custo menor é encontrado
+        self.manhattan = []         # lista com distancias manhattan até cada um dos objetivos
+        self.pai = None             # célula anterior no caminho, para tracejar a rota
 
 class Labirinto:
     """
-        #Classe que recebe um arquivo BPM que representa um labirinto.
+        # Classe que recebe um arquivo BPM que representa um labirinto.
 
         O valor "1" indica obstaculos.
 
@@ -33,21 +38,33 @@ class Labirinto:
     """
     matriz = []
     
-    def __init__(self, nomeArquivo):
-        matriz = self.__pbm_to_matrix(nomeArquivo)
-        
-        self.matriz = matriz
+    def __init__(self, path, seed=None):
+        matriz = self.__pbm_to_matrix(path)
 
-    def getCelulasVazias(self):
+        self.labirinto = {l: {s: Celula(matriz[l][s]) for s in range(len(matriz[l]))} for l in range(len(matriz))}
+
+        # self.recompensas, self.agente = self.__setRecompensas(seed) metodo __setRecompensas ainda precisa ser implementado
+
+    def __getCelulasVazias(self):
         """
         Metodo que captura todas as posicoes em branco do tabuleiro, passiveis de posicionamento.
         :return list celulasVazias
         """
-        pass
+        return [cell for line in self.labirinto.values() for cell in line.values() if cell.tipo == '0']
               
-    def setPosicoes(self, energiaAlvos : list[int]):
+    def __setRecompensas(self, seed):
         """
-            Metodo que recebe uma lista de energias (alvos) e as posiciona, assim como o agente.
+            Metodo que recebe uma seed e deve retornar uma tupla com posições e valores para premios/energias e agente
+            exemplo:
+            
+                (
+                    [
+                        {'valor': int, 'x': int, 'y': int},
+                        {'valor': int, 'x': int, 'y': int},     # lista com posição e valores para os premios/energias
+                        {'valor': int, 'x': int, 'y': int}
+                    ],
+                    {'x': int, 'y': int}                        # dicionario com posição para o agente
+                )
         """
 
         """
@@ -56,11 +73,8 @@ class Labirinto:
             Aqui será implementada a logica que definirá onde serão spawnadas as energias e o agente
         """
         
-        celulasVazias = self.getCelulasVazias()
-        # Ex:
-        # [-1 , * , -1]
-        # [23 , 0 , -1]
-        # [-1 , 34, -1]
+        celulasVazias = self.__getCelulasVazias()
+
         pass
 
     def getPosicaoAgente():
@@ -76,7 +90,7 @@ class Labirinto:
         # ]
         return 0;
 
-    def __pbm_to_matrix(pbm):
+    def __pbm_to_matrix(self, pbm):
         """
             recebe path para arquivo pbm, o arquivo deve seguir o seguinte formato:
 
@@ -99,14 +113,3 @@ class Labirinto:
                 i += 1
             matrix.append(line)
         return matrix
-
-class Celula:
-    def __init__(self, tipo):
-        self.tipo = tipo
-        self.cost = float('inf')    # o custo deve ser infinito inicialmente porque o custo apenas é trocado quando um custo menor é encontrado
-        self.manhattan = []         # lista com distancias manhattan até cada um dos objetivos
-        # self.prioridade = []      # melhor implementar no agente, será uma lista com o valor de cada objetivo então será igual para todas as células
-        self.pai = None             # célula anterior no caminho, para tracejar a rota
-
-    # def avaliação(self):              # faz mais sentido implementar no agente
-    #     pass
