@@ -1,3 +1,5 @@
+from random import randint
+
 class Celula:
     def __init__(self, tipo):
         self.tipo = tipo
@@ -51,31 +53,47 @@ class Labirinto:
         :return list celulasVazias
         """
         return [cell for line in self.labirinto.values() for cell in line.values() if cell.tipo == '0']
-              
-    def __setRecompensas(self, seed):
+
+    def __getPosicoes(self):
+
         """
-            Metodo que recebe uma seed e deve retornar uma tupla com posições e valores para premios/energias e agente
+            Metodo que deve retornar uma tupla com posições e valores para alvos e posição do agente
             exemplo:
             
                 (
                     [
-                        {'valor': int, 'x': int, 'y': int},
-                        {'valor': int, 'x': int, 'y': int},     # lista com posição e valores para os premios/energias
-                        {'valor': int, 'x': int, 'y': int}
+                        [x, y, valor],
+                        [x, y, valor],     # lista com posição e valores para os alvos
+                        [x, y, valor],
                     ],
-                    {'x': int, 'y': int}                        # dicionario com posição para o agente
+                    [x,y]                       # lista com posição para o agente
                 )
         """
 
         """
             Deve considerar posições em branco com o metodo getCelulasVazias
             Deve considerar que o agente nao pode ser gerado em um obstaculo ou em um alvo
-            Aqui será implementada a logica que definirá onde serão spawnadas as energias e o agente
+            Aqui será implementada a logica que definirá onde serão spawnadas os alvos e o agente
         """
-        
-        celulasVazias = self.__getCelulasVazias()
 
-        pass
+        voidList = self.__getCelulasVazias(); #[[0,0],[0,1],[1,1],[5,7],[20,20],[10,10]] 
+        posicoes = [] 
+
+        for i in range(3): #define valores e posições dos alvos
+            c = randint(0,(len(voidList)-1))
+            aux = voidList[c]
+            aux.append(randint(1,50))
+            posicoes.append(aux)
+            voidList.pop(c)
+
+        c = randint(0,(len(voidList)-1)) #define posição do agente
+        posicoes.append(voidList[c])
+        voidList.pop(c)
+
+        posicoes = tuple(posicoes)
+
+        return posicoes
+              
 
     def getPosicaoAgente():
         # Retorna a posição inicial do agente;
