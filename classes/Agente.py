@@ -8,11 +8,11 @@ class Agente:
 
   def __init__(self, labirinto : Labirinto, energiaInicial : int):
     self.labirinto = labirinto
-    self.estadoAtual = {"coordenada": self.labirinto.getPosicaoAgente, "energia": energiaInicial}
+    self.estadoAtual = {"coordenada": self.labirinto.agente, "energia": energiaInicial}
 
   #Acões
   def mover(self):
-    listaEnergia = self.labirinto.getPosicaoEnergiaAlvo()
+    listaRecompensas = self.labirinto.recompensas
     # Definir qual energia irei me mover
       # custoDeCaminho baixo
       # ganhoEnergetico alto

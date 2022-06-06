@@ -41,9 +41,9 @@ class Labirinto:
     def __init__(self, path, seed=None):
         matriz = self.__pbm_to_matrix(path)
 
-        self.labirinto = {l: {s: Celula(matriz[l][s]) for s in range(len(matriz[l]))} for l in range(len(matriz))}
+        self.labirinto = {l: {c: Celula(matriz[l][c]) for c in range(len(matriz[l]))} for l in range(len(matriz))}
 
-        # self.recompensas, self.agente = self.__setRecompensas(seed) metodo __setRecompensas ainda precisa ser implementado
+        # self.recompensas, self.agente = self.__getPosicoes(seed) metodo __setRecompensas ainda precisa ser implementado
 
     def __getCelulasVazias(self):
         """
@@ -76,19 +76,22 @@ class Labirinto:
         celulasVazias = self.__getCelulasVazias()
 
         pass
-
-    def getPosicaoAgente():
-        # Retorna a posição inicial do agente;
-        # Ex : [2,2]
-        return 0;
-
-    def getPosicaoEnergiaAlvo():
-        # Retornar uma lista de dicionarios
-        # [
-        # {"coordenada": [x,y], "energia": int},
-        # {"coordenada": [x,y], "energia": int}
-        # ]
-        return 0;
+    
+    def __str__(self):
+        string = ''
+        for linha in self.labirinto:
+            for celula in linha:
+                match celula.tipo:
+                    case '0':
+                        string = f'{string}⬜\u200c'
+                    case '1':
+                        string = f'{string}⬛\u200c'
+                    case 'r':
+                        string = f'{string}🟨\u200c'
+                    case 'a':
+                        string = f'{string}🟥\u200c'
+            string = f'{string}\n'
+        return string
 
     def __pbm_to_matrix(self, pbm):
         """
