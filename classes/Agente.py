@@ -21,13 +21,4 @@ class Agente:
     #Com base na lista, implementa A*
     
     pass
-
-
-
-
-  def isEnergia(self):
-    # Verificar se a posicao atual (coordenadas) , e correspondente ao posicionamento de uma energia
-    # Metodos que devem ser utilizados : getPosicaoEnergiaAlvo()
-    pass
-
   #Algoritmo
