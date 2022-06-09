@@ -1,11 +1,15 @@
 from random import randint, seed
+from copy import deepcopy
 
-class Celula:
-    def __init__(self, tipo):
+class Celula:      #tipo eh o valor 1 ou 0
+    def __init__(self, tipo, y, x):
         self.tipo = tipo
         self.cost = float('inf')    # o custo deve ser infinito inicialmente porque o custo apenas é trocado quando um custo menor é encontrado
-        self.manhattan = []         # lista com distancias manhattan até cada um dos objetivos
+        self.manhattan = [None, None, None]         # lista com distancias manhattan até cada um dos objetivos
         self.pai = None             # célula anterior no caminho, para tracejar a rota
+        self.f_avaliacao = None
+        self.x = x
+        self.y = y
 
 class Labirinto:
     """
@@ -51,25 +55,28 @@ class Labirinto:
                     labirinto[l] = {c: Celula(matriz[l][c])}
         """
           #pega o tamanho da matriz ai vai interar
-        self.labirinto = {l: {c: Celula(matriz[l][c]) for c in range(len(matriz[l]))} for l in range(len(matriz))}
+        self.labirinto = {l: {c: Celula(matriz[l][c], l, c) for c in range(len(matriz[l]))} for l in range(len(matriz))}
+
+        self.celulas_vazias = self.__getCelulasVazias()
 
         self.recompensas, self.agente_posicoes = self.__getPosicoes()
+
+        self.labirinto[self.agente_posicoes[0]][self.agente_posicoes[1]].cost = 0
         
         #([16, 4, 49], [16, 11, 21], [14, 5, 42], [16, 8])
         for recompensa in self.recompensas:
-            self.labirinto[recompensa[1]][recompensa[0]].tipo = 'r'
+            self.labirinto[recompensa[0]][recompensa[1]].tipo = 'r'
         
-        self.labirinto[self.agente_posicoes[1]][self.agente_posicoes[0]].tipo = 'a'
+        self.labirinto[self.agente_posicoes[0]][self.agente_posicoes[1]].tipo = 'a'
 
     def __getCelulasVazias(self):
         """
         Metodo que captura todas as posicoes em branco do tabuleiro, passiveis de posicionamento.
         :return list celulasVazias
         """
-        return [[c, l] for l, line in self.labirinto.items() for c, cell in line.items() if cell.tipo == '0']
+        return [[l, c] for l, line in self.labirinto.items() for c, cell in line.items() if cell.tipo == '0']
 
     def __getPosicoes(self):
-
         """
             Metodo que deve retornar uma tupla com posições e valores para alvos e posição do agente
             exemplo:
@@ -83,13 +90,7 @@ class Labirinto:
                     [x,y]                       # lista com posição para o agente
                 )
         """         
-
-        """
-            Deve considerar posições em branco com o metodo getCelulasVazias
-            Deve considerar que o agente nao pode ser gerado em um obstaculo ou em um alvo
-            Aqui será implementada a logica que definirá onde serão spawnadas os alvos e o agente
-        """
-        voidList = self.__getCelulasVazias(); #[[1,2],[2,2],[2,3],[3,1],[4,2],[1,1]] 
+        voidList = deepcopy(self.celulas_vazias); #[[1,2],[2,2],[2,3],[3,1],[4,2],[1,1]] 
         posicoes = [] 
         for i in range(3): #define valores e posições dos alvos
             c = randint(0,(len(voidList)-1))
@@ -119,19 +120,6 @@ class Labirinto:
                         string = f'{string}🟥\u200c'
             string = f'{string}\n'
         return string
-              
-    def getPosicaoAgente():
-        # Retorna a posição inicial do agente;
-        # Ex : [2,2]
-        return 0;
-
-    def getPosicaoEnergiaAlvo():
-        # Retornar uma lista de dicionarios
-        # [
-        # {"coordenada": [x,y], "energia": int},
-        # {"coordenada": [x,y], "energia": int}
-        # ]
-        return 0;
 
     def __pbm_to_matrix(self, pbm):
         """
