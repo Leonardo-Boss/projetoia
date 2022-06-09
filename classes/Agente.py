@@ -30,10 +30,9 @@ class Agente:
     self.abertos.remove(celulaExpansao)
     self.coordenadaAgente = [celulaExpansao.y, celulaExpansao.x]
     if celulaExpansao.tipo == 'r':
-      celula = [item for item in self.labirinto.recompensas if item.y == celulaExpansao.y and item.x == celulaExpansao.x][0]
-      self.labirinto.recompensas.pop(celula)
+      celula = [item for item in self.labirinto.recompensas if item[0] == celulaExpansao.y and item[1] == celulaExpansao.x][0]
+      self.labirinto.recompensas.remove(celula)
       
-    
     celulaExpansao.tipo = 'a'
     self.celulaAgente.tipo = '0'
     self.celulaAgente = celulaExpansao
@@ -89,17 +88,3 @@ class Agente:
     if celula.tipo == 'r':
       recompensas += 1
     return recompensas
-
-  def encontrar(elemento):
-    pos_i = 0 # variável provisória de índice
-    pos_j = 0 # idem
-
-    for i in range (len(lista)): # procurar em todas as listas internas
-        for j in range (i): # procurar em todos os elementos nessa lista
-            if elemento in lista[i][j]: # se encontrarmos elemento ('ana')
-                pos_i = i # guardamos o índice i
-                pos_j = j # e o índice j
-                break # saímos do loop interno
-            break # e do externo
-    return (pos_i, pos_j) # e retornamos os índices
-

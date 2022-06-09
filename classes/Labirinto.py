@@ -95,8 +95,8 @@ class Labirinto:
         for i in range(3): #define valores e posições dos alvos
             c = randint(0,(len(voidList)-1))
             aux = voidList[c] # aux = [x,y]
-            
-            aux.append(randint(1,50)) #aux = [x,y,valor]
+             custo
+            aux.append(randint(50,100)) #aux = [x,y,valor]
             posicoes.append(aux)
             voidList.pop(c)
 
