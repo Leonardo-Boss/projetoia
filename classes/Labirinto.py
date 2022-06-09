@@ -59,7 +59,7 @@ class Labirinto:
         for recompensa in self.recompensas:
             self.labirinto[recompensa[1]][recompensa[0]].tipo = 'r'
         
-        self.labirinto[self.agente_posicoes[1]][self.agente_posicoes[0]] = 'a'
+        self.labirinto[self.agente_posicoes[1]][self.agente_posicoes[0]].tipo = 'a'
 
     def __getCelulasVazias(self):
         """
