@@ -39,22 +39,34 @@ class Labirinto:
             ]
     """
     matriz = []
-    
+
     def __init__(self, path, seed_value=None):
         seed(seed_value)
 
         matriz = self.__pbm_to_matrix(path)
-
+        """
+            labirinto = {}
+            for l in range(len(matriz)):
+                for c in range(len(matriz[l]))
+                    labirinto[l] = {c: Celula(matriz[l][c])}
+        """
+          #pega o tamanho da matriz ai vai interar
         self.labirinto = {l: {c: Celula(matriz[l][c]) for c in range(len(matriz[l]))} for l in range(len(matriz))}
 
-        self.recompensas, self.agente = self.__getPosicoes()
+        self.recompensas, self.agente_posicoes = self.__getPosicoes()
+        
+        #([16, 4, 49], [16, 11, 21], [14, 5, 42], [16, 8])
+        for recompensa in self.recompensas:
+            self.labirinto[recompensa[1]][recompensa[0]].tipo = 'r'
+        
+        self.labirinto[self.agente_posicoes[1]][self.agente_posicoes[0]] = 'a'
 
     def __getCelulasVazias(self):
         """
         Metodo que captura todas as posicoes em branco do tabuleiro, passiveis de posicionamento.
         :return list celulasVazias
         """
-        return [cell for line in self.labirinto.values() for cell in line.values() if cell.tipo == '0']
+        return [[c, l] for l, line in self.labirinto.items() for c, cell in line.items() if cell.tipo == '0']
 
     def __getPosicoes(self):
 
@@ -70,29 +82,26 @@ class Labirinto:
                     ],
                     [x,y]                       # lista com posição para o agente
                 )
-        """
+        """         
 
         """
             Deve considerar posições em branco com o metodo getCelulasVazias
             Deve considerar que o agente nao pode ser gerado em um obstaculo ou em um alvo
             Aqui será implementada a logica que definirá onde serão spawnadas os alvos e o agente
         """
-        voidList = self.__getCelulasVazias(); #[[0,0],[0,1],[1,1],[5,7],[20,20],[10,10]] 
+        voidList = self.__getCelulasVazias(); #[[1,2],[2,2],[2,3],[3,1],[4,2],[1,1]] 
         posicoes = [] 
-
         for i in range(3): #define valores e posições dos alvos
             c = randint(0,(len(voidList)-1))
-            aux = voidList[c]
-            aux.append(randint(1,50))
+            aux = voidList[c] # aux = [x,y]
+            
+            aux.append(randint(1,50)) #aux = [x,y,valor]
             posicoes.append(aux)
             voidList.pop(c)
 
         c = randint(0,(len(voidList)-1)) #define posição do agente
-        posicoes.append(voidList[c])
-        voidList.pop(c)
-
-        posicoes = tuple(posicoes)
-
+        posicoes = (posicoes, voidList[c])
+        
         return posicoes
     
     def __str__(self):
