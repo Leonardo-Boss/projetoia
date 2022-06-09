@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, seed
 
 class Celula:
     def __init__(self, tipo):
@@ -40,12 +40,14 @@ class Labirinto:
     """
     matriz = []
     
-    def __init__(self, path, seed=None):
+    def __init__(self, path, seed_value=None):
+        seed(seed_value)
+
         matriz = self.__pbm_to_matrix(path)
 
         self.labirinto = {l: {c: Celula(matriz[l][c]) for c in range(len(matriz[l]))} for l in range(len(matriz))}
 
-        # self.recompensas, self.agente = self.__getPosicoes(seed) metodo __setRecompensas ainda precisa ser implementado
+        self.recompensas, self.agente = self.__getPosicoes()
 
     def __getCelulasVazias(self):
         """
