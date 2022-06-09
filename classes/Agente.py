@@ -19,7 +19,8 @@ class Agente:
       # ganho alto
       # Executar buscaEmAmplitude para saber pontos passiveis de movimentacao  
     #Com base na lista, implementa A*
-    if(len(self.labirinto.recompensas) == 0):
+
+    if(self.__caminhoFinal == len(self.labirinto.recompensas)):
       return 0
       
     self.getCelulasAdjacentes()
@@ -28,6 +29,11 @@ class Agente:
     self.fechados.append(celulaExpansao)
     self.abertos.remove(celulaExpansao)
     self.coordenadaAgente = [celulaExpansao.y, celulaExpansao.x]
+    if celulaExpansao.tipo == 'r':
+      celula = [item for item in self.labirinto.recompensas if item.y == celulaExpansao.y and item.x == celulaExpansao.x][0]
+      self.labirinto.recompensas.pop(celula)
+      
+    
     celulaExpansao.tipo = 'a'
     self.celulaAgente.tipo = '0'
     self.celulaAgente = celulaExpansao
@@ -58,7 +64,6 @@ class Agente:
     """
       Aqui eh feito o calculo da funcao heuristica para cada um dos alvos
     """
-    # ToDo: recacular celulas fechadas
     if celulaExpansao.tipo != '1' and celulaExpansao.cost > self.celulaAgente.cost:
 
       self.abertos.append(celulaExpansao)
@@ -75,3 +80,26 @@ class Agente:
         f_avaliacao.append(recompensa[2] - celulaExpansao.cost - celulaExpansao.manhattan[i])
 
       celulaExpansao.f_avaliacao =  max(f_avaliacao)
+
+  def __caminhoFinal(self, celula):
+    recompensas = 0
+    pai = celula.pai
+    if pai:
+      recompensas += self.__caminhoFinal(pai)
+    if celula.tipo == 'r':
+      recompensas += 1
+    return recompensas
+
+  def encontrar(elemento):
+    pos_i = 0 # variável provisória de índice
+    pos_j = 0 # idem
+
+    for i in range (len(lista)): # procurar em todas as listas internas
+        for j in range (i): # procurar em todos os elementos nessa lista
+            if elemento in lista[i][j]: # se encontrarmos elemento ('ana')
+                pos_i = i # guardamos o índice i
+                pos_j = j # e o índice j
+                break # saímos do loop interno
+            break # e do externo
+    return (pos_i, pos_j) # e retornamos os índices
+
