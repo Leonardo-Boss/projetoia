@@ -95,8 +95,8 @@ class Labirinto:
     
     def __str__(self):
         string = ''
-        for linha in self.labirinto:
-            for celula in linha:
+        for linha in self.labirinto.values():
+            for celula in linha.values():
                 match celula.tipo:
                     case '0':
                         string = f'{string}⬜\u200c'
@@ -109,7 +109,6 @@ class Labirinto:
             string = f'{string}\n'
         return string
               
-
     def getPosicaoAgente():
         # Retorna a posição inicial do agente;
         # Ex : [2,2]

@@ -1,4 +1,3 @@
-
 from classes.Labirinto import Labirinto
 
 class Agente:
