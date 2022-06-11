@@ -4,13 +4,16 @@ from classes.Labirinto import Labirinto, Celula
 class Agente:
 
 
-  def __init__(self, labirinto : Labirinto):
-    self.labirinto = labirinto
-    self.coordenadaAgente = labirinto.agente_posicoes
+  def __init__(self, path, seed):
+    self.seed = seed
+    self.path = path
+    self.labirinto = Labirinto(path, seed)
+    self.coordenadaAgente = self.labirinto.agente_posicoes
     self.celulaAgente = self.labirinto.labirinto[self.coordenadaAgente[0]][self.coordenadaAgente[1]]
     self.abertos = []
     self.fechados = []
     self.adjacentes = []
+    self.caminho = []
 
   #Acões
   def mover(self):
@@ -20,8 +23,8 @@ class Agente:
       # Executar buscaEmAmplitude para saber pontos passiveis de movimentacao  
     #Com base na lista, implementa A*
 
-    if(self.__caminhoFinal == len(self.labirinto.recompensas)):
-      return 0
+    if(len(self.labirinto.recompensas) == 0):
+      return 1
       
     self.getCelulasAdjacentes()
     
@@ -32,10 +35,24 @@ class Agente:
     if celulaExpansao.tipo == 'r':
       celula = [item for item in self.labirinto.recompensas if item[0] == celulaExpansao.y and item[1] == celulaExpansao.x][0]
       self.labirinto.recompensas.remove(celula)
-      
+      self.__caminhoFinal(celulaExpansao)
+      for aberto in self.abertos:
+        aberto.cost = float('inf')
+        aberto.pai = None
+      for fechado in self.fechados:
+        fechado.cost = float('inf')
+        fechado.pai = None
+      self.abertos = []
+      self.fechados = []
+      celulaExpansao.tipo = 'a'
+      self.celulaAgente.tipo = 'f'
+      self.celulaAgente = celulaExpansao
+      self.celulaAgente.cost = 0
+      return 0
     celulaExpansao.tipo = 'a'
-    self.celulaAgente.tipo = '0'
+    self.celulaAgente.tipo = 'f'
     self.celulaAgente = celulaExpansao
+    self.pintarLabirinto()
 
   #Algoritmo
 
@@ -75,16 +92,23 @@ class Agente:
       f_avaliacao = []
 
       for i, recompensa in enumerate(self.labirinto.recompensas):
-        celulaExpansao.manhattan[i] = fabs(recompensa[0]-self.coordenadaAgente[0])+fabs(recompensa[1]-self.coordenadaAgente[1])
-        f_avaliacao.append(recompensa[2] - celulaExpansao.cost - celulaExpansao.manhattan[i])
-
+        celulaExpansao.manhattan[i] = fabs(recompensa[0]-celulaExpansao.y)+fabs(recompensa[1]-celulaExpansao.x)
+        f_avaliacao.append(recompensa[2] - celulaExpansao.cost - 3*celulaExpansao.manhattan[i])
       celulaExpansao.f_avaliacao =  max(f_avaliacao)
 
   def __caminhoFinal(self, celula):
-    recompensas = 0
     pai = celula.pai
     if pai:
-      recompensas += self.__caminhoFinal(pai)
-    if celula.tipo == 'r':
-      recompensas += 1
-    return recompensas
+      self.__caminhoFinal(pai)
+    self.caminho.append(celula)
+
+  def pintarLabirinto(self):
+    for fechado in self.fechados:
+      fechado.tipo = 'f'
+    for aberto in self.abertos:
+      aberto.tipo = 'ab'
+    for passo in self.caminho:
+      passo.tipo = 'c'
+    self.celulaAgente.tipo = 'a'
+    
+    print(self.labirinto)

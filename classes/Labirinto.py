@@ -95,7 +95,6 @@ class Labirinto:
         for i in range(3): #define valores e posições dos alvos
             c = randint(0,(len(voidList)-1))
             aux = voidList[c] # aux = [x,y]
-             custo
             aux.append(randint(50,100)) #aux = [x,y,valor]
             posicoes.append(aux)
             voidList.pop(c)
@@ -118,6 +117,12 @@ class Labirinto:
                         string = f'{string}🟨\u200c'
                     case 'a':
                         string = f'{string}🟥\u200c'
+                    case 'f':
+                        string = f'{string}🟩\u200c'
+                    case 'ab':
+                        string = f'{string}🟦\u200c'
+                    case 'c':
+                        string = f'{string}🟪\u200c'
             string = f'{string}\n'
         return string
 

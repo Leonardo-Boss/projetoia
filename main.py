@@ -1,12 +1,9 @@
 from classes.Agente import Agente
-from classes.Labirinto import Labirinto
 import os
 from time import sleep
 
-l = Labirinto("mapas/labirinto1.pbm")
-agente = Agente(l)
+agente = Agente("mapas/labirinto1.pbm", 1)
 
-while(agente.mover() != 0):
-    os.system('clear')
-    print(l)
-    sleep(0.3)
+while(agente.mover() != 1):
+    sleep(0.2)
+agente.pintarLabirinto()
