@@ -54,7 +54,7 @@ class Labirinto:
                 for c in range(len(matriz[l]))
                     labirinto[l] = {c: Celula(matriz[l][c])}
         """
-          #pega o tamanho da matriz ai vai interar
+          #pega o tamanho da matriz ai vai iterar
         self.labirinto = {l: {c: Celula(matriz[l][c], l, c) for c in range(len(matriz[l]))} for l in range(len(matriz))}
 
         self.celulas_vazias = self.__getCelulasVazias()
@@ -67,7 +67,6 @@ class Labirinto:
         for recompensa in self.recompensas:
             self.labirinto[recompensa[0]][recompensa[1]].tipo = 'r'
         
-        self.labirinto[self.agente_posicoes[0]][self.agente_posicoes[1]].tipo = 'a'
 
     def __getCelulasVazias(self):
         """
@@ -104,6 +103,21 @@ class Labirinto:
         
         return posicoes
     
+    def list_str(self):
+        string = []
+        for linha in self.labirinto.values():
+            linhas = []
+            for celula in linha.values():
+                match celula.tipo:
+                    case '0':
+                        linhas.append('⬜\u200c')
+                    case '1':
+                        linhas.append('⬛\u200c')
+                    case 'r':
+                        linhas.append('🟨\u200c')
+            string.append(linhas)
+        return string
+
     def __str__(self):
         string = ''
         for linha in self.labirinto.values():
@@ -115,14 +129,14 @@ class Labirinto:
                         string = f'{string}⬛\u200c'
                     case 'r':
                         string = f'{string}🟨\u200c'
-                    case 'a':
-                        string = f'{string}🟥\u200c'
-                    case 'f':
-                        string = f'{string}🟩\u200c'
-                    case 'ab':
-                        string = f'{string}🟦\u200c'
-                    case 'c':
-                        string = f'{string}🟪\u200c'
+                    # case 'a':
+                    #     string = f'{string}🟥\u200c'
+                    # case 'f':
+                    #     string = f'{string}🟩\u200c'
+                    # case 'ab':
+                    #     string = f'{string}🟦\u200c'
+                    # case 'c':
+                    #     string = f'{string}🟪\u200c'
             string = f'{string}\n'
         return string
 
