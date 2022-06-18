@@ -48,6 +48,8 @@ class Labirinto:
         seed(seed_value)
 
         matriz = self.__pbm_to_matrix(path)
+        print(matriz)
+        return
         """
             labirinto = {}
             for l in range(len(matriz)):
@@ -80,17 +82,19 @@ class Labirinto:
             Metodo que deve retornar uma tupla com posições e valores para alvos e posição do agente
             exemplo:
             
-                (
-                    [
-                        [x, y, valor],
-                        [x, y, valor],     # lista com posição e valores para os alvos
-                        [x, y, valor],
-                    ],
-                    [x,y]                       # lista com posição para o agente
-                )
+            (
+                [
+                    [x, y, valor],
+                    [x, y, valor],
+                    [x, y, valor],     # lista com posição e valores para os alvos
+                    [x, y, valor],
+                ],
+                [1,33],                     # lista com posição para o agente
+            )
         """         
         voidList = deepcopy(self.celulas_vazias); #[[1,2],[2,2],[2,3],[3,1],[4,2],[1,1]] 
         posicoes = [] 
+      
         for i in range(3): #define valores e posições dos alvos
             c = randint(0,(len(voidList)-1))
             aux = voidList[c] # aux = [x,y]

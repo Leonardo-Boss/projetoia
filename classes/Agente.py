@@ -25,7 +25,7 @@ class Agente:
       # ganho alto
       # Executar buscaEmAmplitude para saber pontos passiveis de movimentacao  
     #Com base na lista, implementa A*
-
+    print(type(self.labirinto.labirinto))
     if(len(self.labirinto.recompensas) == 0):
       return 1
       
