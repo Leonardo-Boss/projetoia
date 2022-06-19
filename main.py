@@ -6,4 +6,4 @@ agente = Agente("mapas/labirinto1.pbm", 729)
 
 while(agente.mover() != 1):
     sleep(0.3)
-agente.pintarLabirinto()
+    agente.pintarLabirinto()
