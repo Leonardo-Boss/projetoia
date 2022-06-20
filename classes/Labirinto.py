@@ -44,8 +44,9 @@ class Labirinto:
     """
     matriz = []
 
-    def __init__(self, path, seed_value=None):
-        seed(seed_value)
+    def __init__(self, path, seed_value=randint(0,1000)):
+        self.seed = seed_value
+        seed((seed_value))
 
         matriz = self.__pbm_to_matrix(path)
         """

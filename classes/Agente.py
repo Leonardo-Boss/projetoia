@@ -1,17 +1,10 @@
 from math import fabs
-from random import randint
-from typing import Set
-
-from classes.Labirinto import Celula, Labirinto
-
 
 class Agente:
 
 
-  def __init__(self, path, seed=randint(0,1000)):
-    self.seed = seed
-    self.path = path
-    self.labirinto = Labirinto(path, seed)
+  def __init__(self, labirinto):
+    self.labirinto = labirinto
     self.coordenadaAgente = self.labirinto.agente_posicoes
     self.celulaAgente = self.labirinto.labirinto[self.coordenadaAgente[0]][self.coordenadaAgente[1]]
     self.abertos = set()
@@ -55,6 +48,7 @@ class Agente:
       return 0
     self.celulaAgente = celulaExpansao
     self.pintarLabirinto()
+    self.salvar_relatorio()
 
   #Algoritmo
 
@@ -78,7 +72,7 @@ class Agente:
     
 
 
-  def __abrirCelula(self, celulaExpansao:Celula):
+  def __abrirCelula(self, celulaExpansao):
     """
       Aqui eh feito o calculo da funcao heuristica para cada um dos alvos
     """
@@ -107,7 +101,7 @@ class Agente:
       self.__caminhoFinal(pai)
     self.caminho.append(celula)
 
-  def pintarLabirinto(self):
+  def __str__(self):
     str_lab = self.labirinto.list_str()
     for passo in self.caminho:
       str_lab[passo.y][passo.x] ='🟪\u200c'
@@ -119,7 +113,29 @@ class Agente:
     str_str = []
     for l in str_lab:
       str_str.append(''.join(l))
-    
+
     str_lab = '\n'.join(str_str)
-    print(str_lab,'\n')
-    print(self.seed)
+
+    return f"{str_lab}\n"
+
+  def pintarLabirinto(self):
+    print(self)
+    print(self.labirinto.seed)
+
+  def salvar_relatorio(self):
+    def lista(lista):
+      string = ''
+      for item in lista:
+        string = f'{string}({item.x}, {item.y}), '
+      string = f'{string}]\n'
+      return string
+
+    string = str(self)
+    string = f'{string}seed: {self.labirinto.seed}\n'
+    string = f'{string}abertos: ['
+    string = f'{string}{lista(self.abertos)}'
+    string = f'{string}fechados: ['
+    string = f'{string}{lista(self.fechados)}'
+    
+    with open(f'{self.labirinto.seed}.txt', 'a') as f:
+      f.write(string)
