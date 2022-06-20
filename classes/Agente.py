@@ -20,6 +20,8 @@ class Agente:
     #Com base na lista, implementa A*
 
     if(len(self.labirinto.recompensas) == 0):
+      self.pintarLabirinto()
+      self.salvar_mover()
       return 1
       
     self.getCelulasAdjacentes()
@@ -48,7 +50,7 @@ class Agente:
       return 0
     self.celulaAgente = celulaExpansao
     self.pintarLabirinto()
-    self.salvar_relatorio()
+    self.salvar_mover()
 
   #Algoritmo
 
@@ -122,7 +124,10 @@ class Agente:
     print(self)
     print(self.labirinto.seed)
 
-  def salvar_relatorio(self):
+
+
+  def salvar_mover(self):
+    
     def lista(lista):
       string = ''
       for item in lista:
@@ -131,11 +136,26 @@ class Agente:
       return string
 
     string = str(self)
-    string = f'{string}seed: {self.labirinto.seed}\n'
+    
     string = f'{string}abertos: ['
     string = f'{string}{lista(self.abertos)}'
     string = f'{string}fechados: ['
     string = f'{string}{lista(self.fechados)}'
     
+    with open(f'{self.labirinto.seed}.txt', 'a') as f:
+      f.write(string)
+
+  def salvar_header(self):
+    string = ''
+    def lista(lista):
+      string = ''
+      for item in lista:
+        string = f'{string}(valor: {item[2]}, x: {item[1]}, y:{item[0]}), '
+      string = f'{string}]\n'
+      return string
+    string = f'{string}seed: {self.labirinto.seed}\n'
+    string = f'{string}recompensas: ['
+    string = f'{string}{lista(self.labirinto.recompensas)}'
+    string = f'{string}agente: [x: {self.labirinto.agente_posicoes[1]}, y: {self.labirinto.agente_posicoes[0]}]\n'
     with open(f'{self.labirinto.seed}.txt', 'a') as f:
       f.write(string)
