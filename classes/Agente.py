@@ -14,13 +14,13 @@ class Agente:
 
   def printarVariaveis(self , celulaAgente):
     print(f'Celula Atual: \n')
-    print(f'Posicao X do Agente: [{celulaAgente.x}]\n')
-    print(f'Posicao Y do Agente: [{celulaAgente.y}]\n')
-    print(f'Funcao Avaliacao: [{celulaAgente.f_avaliacao}]\n')
-    print(f'Tipo: [{celulaAgente.tipo}]\n')
-    print(f'Custo: [{celulaAgente.cost}]\n')
-    print(f'Manhatann: [{celulaAgente.manhattan}]\n')
-    print(f'Coordenadas Celula Pai: [{celulaAgente.pai}]\n')
+    print(f'Posicao X do Agente: [{celulaAgente.x}]')
+    print(f'Posicao Y do Agente: [{celulaAgente.y}]')
+    print(f'Funcao Avaliacao: [{celulaAgente.f_avaliacao}]')
+    print(f'Tipo: [{celulaAgente.tipo}]')
+    print(f'Custo: [{celulaAgente.cost}]')
+    print(f'Area: [{celulaAgente.manhattan}]')
+    print(f'Coordenadas Celula Pai: [{celulaAgente.pai}]')
 
   #Acões
   def mover(self):
@@ -32,6 +32,7 @@ class Agente:
 
     if(len(self.labirinto.recompensas) == 0):
       print(self)
+      self.printarVariaveis(self.celulaAgente)
       self.salvar_mover()
       self.salvar_footer()
       return 1
@@ -65,6 +66,7 @@ class Agente:
     self.celulaAgente = celulaExpansao
     print(self)
     self.printarVariaveis(self.celulaAgente)
+   
     self.salvar_mover()
 
   #Algoritmo
@@ -162,7 +164,6 @@ class Agente:
       str_str.append(''.join(l))
 
     str_lab = '\n'.join(str_str)
-
     return f"{str_lab}\n"
 
 
@@ -174,6 +175,7 @@ class Agente:
       for item in abertos:
         string = f'{string}[{item}, {item.pai}, {item.f_avaliacao}], '
       string = f'{string}]\n'
+  
       return string
     
     def lista(lista):
@@ -194,7 +196,7 @@ class Agente:
     string = f'{string}{arvore(self.abertos, self.fechados)}\n'
 
     string = f'{string}{self}\n'
-
+  
     return string
 
   def salvar_mover(self):
