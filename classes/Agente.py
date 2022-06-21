@@ -33,7 +33,7 @@ class Agente:
 
     self.coordenadaAgente = [celulaExpansao.y, celulaExpansao.x]
     if celulaExpansao.tipo == 'r':
-      with open(f'{self.labirinto.seed}-arvores_finais.txt', 'a') as f:
+      with open(f'{self.labirinto.seed}-arvores_finais.txt', 'a', encoding='utf-8') as f:
         f.write(self.string_mover())
       celula = [item for item in self.labirinto.recompensas if item[0] == celulaExpansao.y and item[1] == celulaExpansao.x][0]
       self.labirinto.recompensas.remove(celula)
@@ -64,16 +64,16 @@ class Agente:
     """
     
     up = self.labirinto.labirinto[pos_y_agente-1][pos_x_agente]
-    self.__abrirCelula(up)
+    self.__abrirCelula2(up)
 
     down = self.labirinto.labirinto[pos_y_agente+1][pos_x_agente]
-    self.__abrirCelula(down)
+    self.__abrirCelula2(down)
 
     right = self.labirinto.labirinto[pos_y_agente][pos_x_agente+1]
-    self.__abrirCelula(right)
+    self.__abrirCelula2(right)
     
     left = self.labirinto.labirinto[pos_y_agente][pos_x_agente-1]
-    self.__abrirCelula(left)
+    self.__abrirCelula2(left)
     
 
 
@@ -94,6 +94,29 @@ class Agente:
 
       for i, recompensa in enumerate(self.labirinto.recompensas):
         celulaExpansao.manhattan[i] = fabs(recompensa[0]-celulaExpansao.y)+fabs(recompensa[1]-celulaExpansao.x)
+        f_avaliacao.append(recompensa[2] - 0.7*celulaExpansao.cost - celulaExpansao.manhattan[i])
+      celulaExpansao.f_avaliacao =  max(f_avaliacao)
+
+      if celulaExpansao.y == 14 and celulaExpansao.x == 9:
+        pass
+
+  def __abrirCelula2(self, celulaExpansao):
+    """
+      Aqui eh feito o calculo da funcao heuristica para cada um dos alvos
+    """
+    if celulaExpansao.tipo != '1' and celulaExpansao.cost > self.celulaAgente.cost:
+
+      self.abertos.add(celulaExpansao)
+      
+      if celulaExpansao in self.fechados:
+        self.fechados.discard(celulaExpansao)
+
+      celulaExpansao.pai = self.celulaAgente
+      celulaExpansao.cost = self.celulaAgente.cost + 1
+      f_avaliacao = []
+
+      for i, recompensa in enumerate(self.labirinto.recompensas):
+        celulaExpansao.manhattan[i] = fabs(recompensa[0]-celulaExpansao.y)*fabs(recompensa[1]-celulaExpansao.x)
         f_avaliacao.append(recompensa[2] - 0.7*celulaExpansao.cost - celulaExpansao.manhattan[i])
       celulaExpansao.f_avaliacao =  max(f_avaliacao)
 
@@ -156,7 +179,7 @@ class Agente:
   def salvar_mover(self):
     string = self.string_mover()
     
-    with open(f'{self.labirinto.seed}.txt', 'a') as f:
+    with open(f'{self.labirinto.seed}.txt', 'a', encoding='utf-8') as f:
       f.write(string)
 
   def salvar_header(self):
@@ -172,8 +195,8 @@ class Agente:
     string = f'{string}{lista(self.labirinto.recompensas)}'
     string = f'{string}agente: [x: {self.labirinto.agente_posicoes[1]}, y: {self.labirinto.agente_posicoes[0]}]\n'
     string = f'{string}{self}\n'
-    with open(f'{self.labirinto.seed}.txt', 'w') as f:
+    with open(f'{self.labirinto.seed}.txt', 'w', encoding='utf-8') as f:
       f.write(string)
 
-    with open(f'{self.labirinto.seed}-arvores_finais.txt', 'w') as f:
+    with open(f'{self.labirinto.seed}-arvores_finais.txt', 'w', encoding='utf-8') as f:
       f.write(string)
