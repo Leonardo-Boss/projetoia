@@ -19,7 +19,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Enforce/Repo/microservicos/ato-api" />
   </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -61,6 +61,7 @@
       <workItem from="1655590355164" duration="143000" />
       <workItem from="1655590508934" duration="10000" />
       <workItem from="1655590520733" duration="92000" />
+      <workItem from="1655730161791" duration="19000" />
     </task>
     <servers />
   </component>
