@@ -3,7 +3,7 @@ from time import sleep
 
 from classes.Labirinto import Labirinto
 
-labirinto = Labirinto("mapas/labirinto1.pbm", seed_value=656)
+labirinto = Labirinto("mapas/labirinto1.pbm",90)
 
 agente = Agente(labirinto)
 

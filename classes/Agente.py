@@ -23,6 +23,7 @@ class Agente:
     if(len(self.labirinto.recompensas) == 0):
       print(self)
       self.salvar_mover()
+      self.salvar_footer()
       return 1
       
     self.getCelulasAdjacentes()
@@ -64,16 +65,16 @@ class Agente:
     """
     
     up = self.labirinto.labirinto[pos_y_agente-1][pos_x_agente]
-    self.__abrirCelula2(up)
+    self.__abrirCelula(up)
 
     down = self.labirinto.labirinto[pos_y_agente+1][pos_x_agente]
-    self.__abrirCelula2(down)
+    self.__abrirCelula(down)
 
     right = self.labirinto.labirinto[pos_y_agente][pos_x_agente+1]
-    self.__abrirCelula2(right)
+    self.__abrirCelula(right)
     
     left = self.labirinto.labirinto[pos_y_agente][pos_x_agente-1]
-    self.__abrirCelula2(left)
+    self.__abrirCelula(left)
     
 
 
@@ -199,4 +200,13 @@ class Agente:
       f.write(string)
 
     with open(f'{self.labirinto.seed}-arvores_finais.txt', 'w', encoding='utf-8') as f:
+      f.write(string)
+
+  def salvar_footer(self):
+    string = f'custo: {len(self.caminho)}\n'
+
+    with open(f'{self.labirinto.seed}.txt', 'a', encoding='utf-8') as f:
+      f.write(string)
+
+    with open(f'{self.labirinto.seed}-arvores_finais.txt', 'a', encoding='utf-8') as f:
       f.write(string)
