@@ -12,6 +12,16 @@ class Agente:
     self.caminho = []
     self.arvores_de_recompensa = []
 
+  def printarVariaveis(self , celulaAgente):
+    print(f'Celula Atual: \n')
+    print(f'Posicao X do Agente: [{celulaAgente.x}]\n')
+    print(f'Posicao Y do Agente: [{celulaAgente.y}]\n')
+    print(f'Funcao Avaliacao: [{celulaAgente.f_avaliacao}]\n')
+    print(f'Tipo: [{celulaAgente.tipo}]\n')
+    print(f'Custo: [{celulaAgente.cost}]\n')
+    print(f'Manhatann: [{celulaAgente.manhattan}]\n')
+    print(f'Coordenadas Celula Pai: [{celulaAgente.pai}]\n')
+
   #Acões
   def mover(self):
     # Definir qual alvo irei me mover
@@ -54,6 +64,7 @@ class Agente:
       return 0
     self.celulaAgente = celulaExpansao
     print(self)
+    self.printarVariaveis(self.celulaAgente)
     self.salvar_mover()
 
   #Algoritmo
@@ -118,7 +129,13 @@ class Agente:
 
       for i, recompensa in enumerate(self.labirinto.recompensas):
         #Aqui consideramos a Area ao invés de manhattan para heuristica não admissivel
-        celulaExpansao.manhattan[i] = fabs(recompensa[0]-celulaExpansao.y)*fabs(recompensa[1]-celulaExpansao.x)
+        celulaExpansao.manhattan[i] = (fabs(recompensa[0]-celulaExpansao.y)+1 if fabs(recompensa[0]-celulaExpansao.y) > 0 else 0)*(fabs(recompensa[1]-celulaExpansao.x)+1 if fabs(recompensa[1]-celulaExpansao.x) > 0 else 0)
+        #print ('recompensa x :',recompensa[1])
+        #print ('recompensa y :',recompensa[0])
+        #print ('celulaExpansao x :',celulaExpansao.x)
+        #print ('celulaExpansao y :',celulaExpansao.y)
+        #print(celulaExpansao.manhattan[i])
+
         f_avaliacao.append(recompensa[2] - 0.7*celulaExpansao.cost - celulaExpansao.manhattan[i])
       celulaExpansao.f_avaliacao =  max(f_avaliacao)
 
@@ -175,14 +192,6 @@ class Agente:
     string = f'{string}{lista(self.fechados)}'
     string = f'{string}Arvore: ['
     string = f'{string}{arvore(self.abertos, self.fechados)}\n'
-    string = f'{string}Celula Atual: \n'
-    string = f'{string}Posicao X do Agente: [{self.celulaAgente.x}]\n'
-    string = f'{string}Posicao Y do Agente: [{self.celulaAgente.y}]\n'
-    string = f'{string}Funcao Avaliacao: [{self.celulaAgente.f_avaliacao}]\n'
-    string = f'{string}Tipo: [{self.celulaAgente.tipo}]\n'
-    string = f'{string}Custo: [{self.celulaAgente.cost}]\n'
-    string = f'{string}Manhatann: [{self.celulaAgente.manhattan}]\n'
-    string = f'{string}Coordenadas Celula Pai: [{self.celulaAgente.pai}]\n'
 
     string = f'{string}{self}\n'
 
