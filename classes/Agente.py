@@ -10,6 +10,7 @@ class Agente:
     self.abertos = set()
     self.fechados = {self.celulaAgente}
     self.caminho = []
+    self.arvores_de_recompensa = []
 
   #Acões
   def mover(self):
@@ -20,7 +21,7 @@ class Agente:
     #Com base na lista, implementa A*
 
     if(len(self.labirinto.recompensas) == 0):
-      self.pintarLabirinto()
+      print(self)
       self.salvar_mover()
       return 1
       
@@ -32,6 +33,8 @@ class Agente:
 
     self.coordenadaAgente = [celulaExpansao.y, celulaExpansao.x]
     if celulaExpansao.tipo == 'r':
+      with open(f'{self.labirinto.seed}-arvores_finais.txt', 'a') as f:
+        f.write(self.string_mover())
       celula = [item for item in self.labirinto.recompensas if item[0] == celulaExpansao.y and item[1] == celulaExpansao.x][0]
       self.labirinto.recompensas.remove(celula)
       self.__caminhoFinal(celulaExpansao)
@@ -49,7 +52,7 @@ class Agente:
       self.celulaAgente.tipo = '0'
       return 0
     self.celulaAgente = celulaExpansao
-    self.pintarLabirinto()
+    print(self)
     self.salvar_mover()
 
   #Algoritmo
@@ -120,13 +123,16 @@ class Agente:
 
     return f"{str_lab}\n"
 
-  def pintarLabirinto(self):
-    print(self)
-    print(self.labirinto.seed)
 
-
-
-  def salvar_mover(self):
+  def string_mover(self):
+    def arvore(abertos, fechados):
+      string = ''
+      for item in fechados:
+        string = f'{string}[{item}, {item.pai}, {item.f_avaliacao}], '
+      for item in abertos:
+        string = f'{string}[{item}, {item.pai}, {item.f_avaliacao}], '
+      string = f'{string}]\n'
+      return string
     
     def lista(lista):
       string = ''
@@ -135,12 +141,20 @@ class Agente:
       string = f'{string}]\n'
       return string
 
-    string = str(self)
+    string = ''
     
     string = f'{string}abertos: ['
     string = f'{string}{lista(self.abertos)}'
     string = f'{string}fechados: ['
     string = f'{string}{lista(self.fechados)}'
+    string = f'{string}arvore: ['
+    string = f'{string}{arvore(self.abertos, self.fechados)}'
+    string = f'{string}{self}\n'
+
+    return string
+
+  def salvar_mover(self):
+    string = self.string_mover()
     
     with open(f'{self.labirinto.seed}.txt', 'a') as f:
       f.write(string)
@@ -157,5 +171,9 @@ class Agente:
     string = f'{string}recompensas: ['
     string = f'{string}{lista(self.labirinto.recompensas)}'
     string = f'{string}agente: [x: {self.labirinto.agente_posicoes[1]}, y: {self.labirinto.agente_posicoes[0]}]\n'
-    with open(f'{self.labirinto.seed}.txt', 'a') as f:
+    string = f'{string}{self}\n'
+    with open(f'{self.labirinto.seed}.txt', 'w') as f:
+      f.write(string)
+
+    with open(f'{self.labirinto.seed}-arvores_finais.txt', 'w') as f:
       f.write(string)

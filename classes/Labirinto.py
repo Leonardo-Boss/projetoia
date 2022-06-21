@@ -11,6 +11,9 @@ class Celula:      #tipo eh o valor 1 ou 0
         self.x = x
         self.y = y
 
+    def __str__(self):
+        return f'({self.x}, {self.y})'
+
 class Labirinto:
     """
         # Classe que recebe um arquivo BPM que representa um labirinto.
