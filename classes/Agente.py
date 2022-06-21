@@ -65,16 +65,16 @@ class Agente:
     """
     
     up = self.labirinto.labirinto[pos_y_agente-1][pos_x_agente]
-    self.__abrirCelula(up)
+    self.__abrirCelula2(up)
 
     down = self.labirinto.labirinto[pos_y_agente+1][pos_x_agente]
-    self.__abrirCelula(down)
+    self.__abrirCelula2(down)
 
     right = self.labirinto.labirinto[pos_y_agente][pos_x_agente+1]
-    self.__abrirCelula(right)
+    self.__abrirCelula2(right)
     
     left = self.labirinto.labirinto[pos_y_agente][pos_x_agente-1]
-    self.__abrirCelula(left)
+    self.__abrirCelula2(left)
     
 
 
@@ -117,6 +117,7 @@ class Agente:
       f_avaliacao = []
 
       for i, recompensa in enumerate(self.labirinto.recompensas):
+        #Aqui consideramos a Area ao invés de manhattan para heuristica não admissivel
         celulaExpansao.manhattan[i] = fabs(recompensa[0]-celulaExpansao.y)*fabs(recompensa[1]-celulaExpansao.x)
         f_avaliacao.append(recompensa[2] - 0.7*celulaExpansao.cost - celulaExpansao.manhattan[i])
       celulaExpansao.f_avaliacao =  max(f_avaliacao)
@@ -166,13 +167,23 @@ class Agente:
       return string
 
     string = ''
-    
-    string = f'{string}abertos: ['
+
+
+    string = f'{string}Abertos: ['
     string = f'{string}{lista(self.abertos)}'
-    string = f'{string}fechados: ['
+    string = f'{string}Fechados: ['
     string = f'{string}{lista(self.fechados)}'
-    string = f'{string}arvore: ['
-    string = f'{string}{arvore(self.abertos, self.fechados)}'
+    string = f'{string}Arvore: ['
+    string = f'{string}{arvore(self.abertos, self.fechados)}\n'
+    string = f'{string}Celula Atual: \n'
+    string = f'{string}Posicao X do Agente: [{self.celulaAgente.x}]\n'
+    string = f'{string}Posicao Y do Agente: [{self.celulaAgente.y}]\n'
+    string = f'{string}Funcao Avaliacao: [{self.celulaAgente.f_avaliacao}]\n'
+    string = f'{string}Tipo: [{self.celulaAgente.tipo}]\n'
+    string = f'{string}Custo: [{self.celulaAgente.cost}]\n'
+    string = f'{string}Manhatann: [{self.celulaAgente.manhattan}]\n'
+    string = f'{string}Coordenadas Celula Pai: [{self.celulaAgente.pai}]\n'
+
     string = f'{string}{self}\n'
 
     return string
@@ -188,13 +199,13 @@ class Agente:
     def lista(lista):
       string = ''
       for item in lista:
-        string = f'{string}(valor: {item[2]}, x: {item[1]}, y:{item[0]}), '
+        string = f'{string}(Valor: {item[2]}, x: {item[1]}, y:{item[0]}), '
       string = f'{string}]\n'
       return string
-    string = f'{string}seed: {self.labirinto.seed}\n'
-    string = f'{string}recompensas: ['
+    string = f'{string}Seed: {self.labirinto.seed}\n'
+    string = f'{string}Recompensas: ['
     string = f'{string}{lista(self.labirinto.recompensas)}'
-    string = f'{string}agente: [x: {self.labirinto.agente_posicoes[1]}, y: {self.labirinto.agente_posicoes[0]}]\n'
+    string = f'{string}Agente: [x: {self.labirinto.agente_posicoes[1]}, y: {self.labirinto.agente_posicoes[0]}]\n'
     string = f'{string}{self}\n'
     with open(f'{self.labirinto.seed}.txt', 'w', encoding='utf-8') as f:
       f.write(string)
