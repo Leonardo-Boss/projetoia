@@ -25,7 +25,7 @@ class Agente:
     print(f'Funcao Avaliacao: [{celulaAgente.f_avaliacao}]')
     print(f'Tipo: [{celulaAgente.tipo}]')
     print(f'Custo: [{celulaAgente.cost}]')
-    print(f'Area: [{celulaAgente.manhattan}]')
+    print(f'Area || Manhattan: [{celulaAgente.manhattan}]')
     print(f'Coordenadas Celula Pai: [{celulaAgente.pai}]')
 
   #Acões
@@ -85,16 +85,16 @@ class Agente:
     """
     
     up = self.labirinto.labirinto[pos_y_agente-1][pos_x_agente]
-    self.__abrirCelula(up)
+    self.__abrirCelula2(up)
 
     down = self.labirinto.labirinto[pos_y_agente+1][pos_x_agente]
-    self.__abrirCelula(down)
+    self.__abrirCelula2(down)
 
     right = self.labirinto.labirinto[pos_y_agente][pos_x_agente+1]
-    self.__abrirCelula(right)
+    self.__abrirCelula2(right)
     
     left = self.labirinto.labirinto[pos_y_agente][pos_x_agente-1]
-    self.__abrirCelula(left)
+    self.__abrirCelula2(left)
     
 
   # Abre as celulas utilizando heuristica admissivel
