@@ -25,7 +25,7 @@ class Agente:
     print(f'Funcao Avaliacao: [{celulaAgente.f_avaliacao}]')
     print(f'Tipo: [{celulaAgente.tipo}]')
     print(f'Custo: [{celulaAgente.cost}]')
-    print(f'Area || Manhattan: [{celulaAgente.manhattan}]')
+    print(f'Manhattan || Area: [{celulaAgente.manhattan}]')
     print(f'Coordenadas Celula Pai: [{celulaAgente.pai}]')
 
 
@@ -119,8 +119,6 @@ class Agente:
         f_avaliacao.append(recompensa[2] - 0.7*celulaExpansao.cost - celulaExpansao.manhattan[i])
       celulaExpansao.f_avaliacao =  max(f_avaliacao)
 
-      if celulaExpansao.y == 14 and celulaExpansao.x == 9:
-        pass
   # Abre as celulas utilizando heuristica não admissivel
   def __abrirCelula2(self, celulaExpansao):
     """
@@ -226,7 +224,7 @@ class Agente:
       f.write(string)
 
   def salvar_footer(self):
-    string = f'custo: {len(self.caminho)}\n'
+    string = f'custo: {len(self.caminho)-3}\n'
 
     with open(f'{self.labirinto.seed}.txt', 'a', encoding='utf-8') as f:
       f.write(string)
