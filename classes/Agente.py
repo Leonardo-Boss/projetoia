@@ -84,18 +84,19 @@ class Agente:
     """
       Retorna as celulas adjacentes passiveis de movimentacao. O tabuleiro eh visto na perspectiva do canto inferior direito (a iteracao eh feita de cima para baixo)
     """
+    abrirCelula = self.__abrirCelula2
     
     up = self.labirinto.labirinto[pos_y_agente-1][pos_x_agente]
-    self.__abrirCelula(up)
+    abrirCelula(up)
 
     down = self.labirinto.labirinto[pos_y_agente+1][pos_x_agente]
-    self.__abrirCelula(down)
+    abrirCelula(down)
 
     right = self.labirinto.labirinto[pos_y_agente][pos_x_agente+1]
-    self.__abrirCelula(right)
+    abrirCelula(right)
     
     left = self.labirinto.labirinto[pos_y_agente][pos_x_agente-1]
-    self.__abrirCelula(left)
+    abrirCelula(left)
     
 
   # Abre as celulas utilizando heuristica admissivel

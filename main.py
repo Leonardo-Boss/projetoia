@@ -10,5 +10,4 @@ agente = Agente(labirinto)
 agente.salvar_header()
 
 while(agente.mover() != 1):
-    sleep(0.6)
-
+    sleep(0)
