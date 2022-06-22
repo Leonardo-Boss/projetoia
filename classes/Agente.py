@@ -85,16 +85,16 @@ class Agente:
     """
     
     up = self.labirinto.labirinto[pos_y_agente-1][pos_x_agente]
-    self.__abrirCelula2(up)
+    self.__abrirCelula(up)
 
     down = self.labirinto.labirinto[pos_y_agente+1][pos_x_agente]
-    self.__abrirCelula2(down)
+    self.__abrirCelula(down)
 
     right = self.labirinto.labirinto[pos_y_agente][pos_x_agente+1]
-    self.__abrirCelula2(right)
+    self.__abrirCelula(right)
     
     left = self.labirinto.labirinto[pos_y_agente][pos_x_agente-1]
-    self.__abrirCelula2(left)
+    self.__abrirCelula(left)
     
 
   # Abre as celulas utilizando heuristica admissivel
