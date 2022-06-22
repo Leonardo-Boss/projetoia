@@ -95,14 +95,6 @@ class Labirinto:
                         string = f'{string}⬛\u200c'
                     case 'r':
                         string = f'{string}🟨\u200c'
-                    # case 'a':
-                    #     string = f'{string}🟥\u200c'
-                    # case 'f':
-                    #     string = f'{string}🟩\u200c'
-                    # case 'ab':
-                    #     string = f'{string}🟦\u200c'
-                    # case 'c':
-                    #     string = f'{string}🟪\u200c'
             string = f'{string}\n'
         return string
 
