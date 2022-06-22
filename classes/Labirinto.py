@@ -15,50 +15,25 @@ class Celula:      #tipo eh o valor 1 ou 0
         return f'({self.x}, {self.y})'
 
 class Labirinto:
-    """
-        # Classe que recebe um arquivo BPM que representa um labirinto.
 
-        O valor "1" indica obstaculos.
-
-        O valor "0" indica uma posicao vazia.
-
-        Ex: [
-                ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'],
-                ['1', '0', '1', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '1'],
-                ['1', '0', '1', '1', '1', '0', '1', '0', '1', '1', '0', '1', '0', '1', '0', '0', '1', '0', '0', '1'],
-                ['1', '0', '1', '0', '1', '0', '0', '0', '0', '1', '0', '1', '0', '1', '1', '1', '1', '0', '1', '1'],
-                ['1', '0', '1', '0', '1', '1', '1', '1', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '1'],
-                ['1', '0', '0', '0', '0', '0', '0', '1', '0', '1', '0', '1', '1', '1', '0', '1', '1', '1', '1', '1'],
-                ['1', '1', '1', '1', '1', '0', '1', '1', '0', '1', '0', '0', '0', '1', '0', '0', '0', '0', '0', '1'],
-                ['1', '0', '0', '0', '1', '0', '1', '0', '0', '1', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1'],
-                ['1', '0', '1', '1', '1', '0', '1', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '1'],
-                ['1', '0', '0', '0', '1', '0', '0', '1', '0', '0', '0', '0', '0', '1', '1', '1', '0', '1', '1', '1'],
-                ['1', '0', '1', '0', '1', '0', '1', '1', '0', '1', '1', '1', '1', '1', '0', '1', '0', '1', '0', '1'],
-                ['1', '0', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1', '0', '1', '0', '1', '0', '1'],
-                ['1', '0', '0', '0', '0', '0', '1', '0', '1', '1', '1', '1', '0', '1', '0', '1', '0', '1', '0', '1'],
-                ['1', '1', '1', '0', '1', '0', '1', '0', '1', '0', '0', '1', '0', '1', '0', '1', '0', '0', '0', '1'],
-                ['1', '0', '1', '0', '1', '0', '1', '0', '0', '0', '1', '1', '0', '1', '0', '1', '1', '1', '0', '1'],
-                ['1', '0', '1', '0', '1', '0', '1', '1', '1', '1', '1', '0', '0', '1', '0', '0', '0', '1', '0', '1'],
-                ['1', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '1', '1', '0', '1', '0', '1', '0', '1'],
-                ['1', '0', '0', '0', '0', '0', '1', '1', '1', '1', '1', '0', '1', '1', '0', '1', '0', '1', '0', '1'],
-                ['1', '0', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '1'],
-                ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'],
-            ]
-    """
     matriz = []
 
     def __init__(self, path, seed_value=randint(0,1000)):
         self.seed = seed_value
         seed((seed_value))
 
+        """
+        # A variavel matriz recebe através do método __pbm_to_matrix um arquivo PBM que representa um labirinto.
+        O valor "1" indica obstaculos.
+        O valor "0" indica uma posicao vazia.
+        """
         matriz = self.__pbm_to_matrix(path)
+
         """
-            labirinto = {}
-            for l in range(len(matriz)):
-                for c in range(len(matriz[l]))
-                    labirinto[l] = {c: Celula(matriz[l][c])}
+        Utiliza a matriz que é recebida pelo csv e itera para criar um dicionario de de objetos (do tipo Celula) que
+        que pode ser acessado através da linha e coluna;
         """
-          #pega o tamanho da matriz ai vai iterar
+
         self.labirinto = {l: {c: Celula(matriz[l][c], l, c) for c in range(len(matriz[l]))} for l in range(len(matriz))}
 
         self.celulas_vazias = self.__getCelulasVazias()
@@ -75,25 +50,12 @@ class Labirinto:
     def __getCelulasVazias(self):
         """
         Metodo que captura todas as posicoes em branco do tabuleiro, passiveis de posicionamento.
-        :return list celulasVazias
         """
         return [[l, c] for l, line in self.labirinto.items() for c, cell in line.items() if cell.tipo == '0']
 
     def __getPosicoes(self):
-        """
-            Metodo que deve retornar uma tupla com posições e valores para alvos e posição do agente
-            exemplo:
-            
-                (
-                    [
-                        [x, y, valor],
-                        [x, y, valor],     # lista com posição e valores para os alvos
-                        [x, y, valor],
-                    ],
-                    [x,y]                       # lista com posição para o agente
-                )
-        """         
-        voidList = deepcopy(self.celulas_vazias); #[[1,2],[2,2],[2,3],[3,1],[4,2],[1,1]] 
+        'Metodo que retorna uma tupla com posições e valores para alvos e posição do agente'
+        voidList = deepcopy(self.celulas_vazias);
         posicoes = [] 
         for i in range(3): #define valores e posições dos alvos
             c = randint(0,(len(voidList)-1))

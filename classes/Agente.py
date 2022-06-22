@@ -5,11 +5,17 @@ class Agente:
 
   def __init__(self, labirinto):
     self.labirinto = labirinto
+
+    #coordenadaAgente é referente a posição inicial do meu agente no labirinto.
     self.coordenadaAgente = self.labirinto.agente_posicoes
+    
+    #celulaAgente é referente a posição atual do agente.
     self.celulaAgente = self.labirinto.labirinto[self.coordenadaAgente[0]][self.coordenadaAgente[1]]
+    
     self.abertos = set()
     self.fechados = {self.celulaAgente}
     self.caminho = []
+    
     self.arvores_de_recompensa = []
 
   def printarVariaveis(self , celulaAgente):
@@ -24,11 +30,6 @@ class Agente:
 
   #Acões
   def mover(self):
-    # Definir qual alvo irei me mover
-      # custoDeCaminho baixo
-      # ganho alto
-      # Executar buscaEmAmplitude para saber pontos passiveis de movimentacao  
-    #Com base na lista, implementa A*
 
     if(len(self.labirinto.recompensas) == 0):
       print(self)
@@ -50,6 +51,8 @@ class Agente:
       celula = [item for item in self.labirinto.recompensas if item[0] == celulaExpansao.y and item[1] == celulaExpansao.x][0]
       self.labirinto.recompensas.remove(celula)
       self.__caminhoFinal(celulaExpansao)
+      
+      # Se achou uma recompensa, redefine o tabuleiro para o estado inicial
       for aberto in self.abertos:
         aberto.cost = float('inf')
         aberto.pai = None
@@ -58,14 +61,18 @@ class Agente:
         fechado.pai = None
       self.abertos = set()
       self.fechados = set()
-      self.celulaAgente = celulaExpansao
+
+      #Pequenas alterações para que o jogo possa continuar da recompensa que ele acabou de pegar
+      self.celulaAgente = celulaExpansao 
       self.celulaAgente.cost = 0
       self.fechados.add(self.celulaAgente)
       self.celulaAgente.tipo = '0'
       return 0
-    self.celulaAgente = celulaExpansao
-    print(self)
-    self.printarVariaveis(self.celulaAgente)
+    self.celulaAgente = celulaExpansao # Altero a celula onde o agente se encontra para a celula q foi expandida
+    
+    print(self) # Printa o labirinto
+
+    self.printarVariaveis(self.celulaAgente) # Printa as informações a respeito da celula atual do agente
    
     self.salvar_mover()
 
@@ -90,7 +97,7 @@ class Agente:
     self.__abrirCelula2(left)
     
 
-
+  # Abre as celulas utilizando heuristica admissivel
   def __abrirCelula(self, celulaExpansao):
     """
       Aqui eh feito o calculo da funcao heuristica para cada um dos alvos
@@ -113,7 +120,7 @@ class Agente:
 
       if celulaExpansao.y == 14 and celulaExpansao.x == 9:
         pass
-
+  # Abre as celulas utilizando heuristica não admissivel
   def __abrirCelula2(self, celulaExpansao):
     """
       Aqui eh feito o calculo da funcao heuristica para cada um dos alvos
@@ -132,18 +139,14 @@ class Agente:
       for i, recompensa in enumerate(self.labirinto.recompensas):
         #Aqui consideramos a Area ao invés de manhattan para heuristica não admissivel
         celulaExpansao.manhattan[i] = (fabs(recompensa[0]-celulaExpansao.y)+1 if fabs(recompensa[0]-celulaExpansao.y) > 0 else 0)*(fabs(recompensa[1]-celulaExpansao.x)+1 if fabs(recompensa[1]-celulaExpansao.x) > 0 else 0)
-        #print ('recompensa x :',recompensa[1])
-        #print ('recompensa y :',recompensa[0])
-        #print ('celulaExpansao x :',celulaExpansao.x)
-        #print ('celulaExpansao y :',celulaExpansao.y)
-        #print(celulaExpansao.manhattan[i])
 
         f_avaliacao.append(recompensa[2] - 0.7*celulaExpansao.cost - celulaExpansao.manhattan[i])
       celulaExpansao.f_avaliacao =  max(f_avaliacao)
 
       if celulaExpansao.y == 14 and celulaExpansao.x == 9:
         pass
-
+      
+  # Função recursiva que é executada no final da execução, que basicamente entra o pai de todas as celulas de forma iterativa
   def __caminhoFinal(self, celula):
     pai = celula.pai
     if pai:
