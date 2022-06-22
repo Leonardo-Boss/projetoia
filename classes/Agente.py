@@ -29,8 +29,6 @@ class Agente:
     print(f'Coordenadas Celula Pai: [{celulaAgente.pai}]')
 
 
-
-
   #Acões
   def mover(self):
 
@@ -145,9 +143,6 @@ class Agente:
 
         f_avaliacao.append(recompensa[2] - 0.7*celulaExpansao.cost - celulaExpansao.manhattan[i])
       celulaExpansao.f_avaliacao =  max(f_avaliacao)
-
-      if celulaExpansao.y == 14 and celulaExpansao.x == 9:
-        pass
       
   # Função recursiva que é executada no final da execução, que basicamente entra o pai de todas as celulas de forma iterativa
   def __caminhoFinal(self, celula):
