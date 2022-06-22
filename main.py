@@ -5,7 +5,7 @@ from classes.Labirinto import Labirinto
 
 labirinto = Labirinto("mapas/labirinto1.pbm", 90)
 
-agente = Agente(labirinto)
+agente = Agente(labirinto, admissivel=0)
 
 agente.salvar_header()
 
