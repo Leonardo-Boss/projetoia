@@ -3,7 +3,7 @@ from math import fabs
 class Agente:
 
 
-  def __init__(self, labirinto):
+  def __init__(self, labirinto, admissivel=True):
     self.labirinto = labirinto
 
     #coordenadaAgente é referente a posição inicial do meu agente no labirinto.
@@ -15,6 +15,7 @@ class Agente:
     self.abertos = set()
     self.fechados = {self.celulaAgente}
     self.caminho = []
+    self.abrirCelula = self.__abrirCelula if admissivel == True else self.__abrirCelula2
     
     self.arvores_de_recompensa = []
 
@@ -83,20 +84,18 @@ class Agente:
     pos_y_agente, pos_x_agente = self.coordenadaAgente
     """
       Retorna as celulas adjacentes passiveis de movimentacao. O tabuleiro eh visto na perspectiva do canto inferior direito (a iteracao eh feita de cima para baixo)
-    """
-    abrirCelula = self.__abrirCelula2
-    
+    """    
     up = self.labirinto.labirinto[pos_y_agente-1][pos_x_agente]
-    abrirCelula(up)
+    self.abrirCelula(up)
 
     down = self.labirinto.labirinto[pos_y_agente+1][pos_x_agente]
-    abrirCelula(down)
+    self.abrirCelula(down)
 
     right = self.labirinto.labirinto[pos_y_agente][pos_x_agente+1]
-    abrirCelula(right)
+    self.abrirCelula(right)
     
     left = self.labirinto.labirinto[pos_y_agente][pos_x_agente-1]
-    abrirCelula(left)
+    self.abrirCelula(left)
     
 
   # Abre as celulas utilizando heuristica admissivel
